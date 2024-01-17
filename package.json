@@ -20,7 +20,9 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "5.3.4",
+    "strapi-advanced-uuid": "^1.1.4",
     "strapi-plugin-entity-relationship-chart": "^4.14.6",
+    "strapi-plugin-import-export-entries": "^1.23.1",
     "strapi-plugin-multi-select": "^1.2.3",
     "strapi-plugin-slugify": "^2.3.8",
     "styled-components": "5.3.3"
