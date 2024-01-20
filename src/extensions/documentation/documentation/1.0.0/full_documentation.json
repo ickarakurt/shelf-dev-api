@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2024-01-18T23:58:34.525Z"
+    "x-generation-date": "2024-01-20T19:25:51.628Z"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -95,14 +95,12 @@
           "data": {
             "required": [
               "name",
-              "slug"
+              "slug",
+              "birthDate"
             ],
             "type": "object",
             "properties": {
               "name": {
-                "type": "string"
-              },
-              "biography": {
                 "type": "string"
               },
               "slug": {
@@ -141,7 +139,8 @@
               },
               "website": {
                 "type": "string"
-              }
+              },
+              "biography": {}
             }
           }
         }
@@ -196,13 +195,11 @@
         "type": "object",
         "required": [
           "name",
-          "slug"
+          "slug",
+          "birthDate"
         ],
         "properties": {
           "name": {
-            "type": "string"
-          },
-          "biography": {
             "type": "string"
           },
           "slug": {
@@ -243,9 +240,6 @@
                                     "type": "object",
                                     "properties": {
                                       "name": {
-                                        "type": "string"
-                                      },
-                                      "biography": {
                                         "type": "string"
                                       },
                                       "slug": {
@@ -902,6 +896,7 @@
                                       "website": {
                                         "type": "string"
                                       },
+                                      "biography": {},
                                       "createdAt": {
                                         "type": "string",
                                         "format": "date-time"
@@ -1055,9 +1050,6 @@
                           "type": "string",
                           "format": "date"
                         },
-                        "summary": {
-                          "type": "string"
-                        },
                         "editions": {
                           "type": "object",
                           "properties": {
@@ -1081,9 +1073,6 @@
                                       "publicationDate": {
                                         "type": "string",
                                         "format": "date"
-                                      },
-                                      "editionDescription": {
-                                        "type": "string"
                                       },
                                       "cover": {
                                         "type": "object",
@@ -1224,6 +1213,13 @@
                                           }
                                         }
                                       },
+                                      "editionDescription": {},
+                                      "editionTitle": {
+                                        "type": "string"
+                                      },
+                                      "pageCount": {
+                                        "type": "integer"
+                                      },
                                       "createdAt": {
                                         "type": "string",
                                         "format": "date-time"
@@ -1272,6 +1268,24 @@
                                       }
                                     }
                                   }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "summary": {},
+                        "activeEdition": {
+                          "type": "object",
+                          "properties": {
+                            "data": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "number"
+                                },
+                                "attributes": {
+                                  "type": "object",
+                                  "properties": {}
                                 }
                               }
                             }
@@ -1478,6 +1492,7 @@
           "website": {
             "type": "string"
           },
+          "biography": {},
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -1599,9 +1614,6 @@
                 "type": "string",
                 "format": "date"
               },
-              "summary": {
-                "type": "string"
-              },
               "editions": {
                 "type": "array",
                 "items": {
@@ -1615,6 +1627,18 @@
                   ],
                   "example": "string or id"
                 }
+              },
+              "summary": {},
+              "activeEdition": {
+                "oneOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "example": "string or id"
               }
             }
           }
@@ -1694,9 +1718,6 @@
                       "type": "object",
                       "properties": {
                         "name": {
-                          "type": "string"
-                        },
-                        "biography": {
                           "type": "string"
                         },
                         "slug": {
@@ -2094,9 +2115,6 @@
                                         "type": "string",
                                         "format": "date"
                                       },
-                                      "summary": {
-                                        "type": "string"
-                                      },
                                       "editions": {
                                         "type": "object",
                                         "properties": {
@@ -2120,9 +2138,6 @@
                                                     "publicationDate": {
                                                       "type": "string",
                                                       "format": "date"
-                                                    },
-                                                    "editionDescription": {
-                                                      "type": "string"
                                                     },
                                                     "cover": {
                                                       "type": "object",
@@ -2494,6 +2509,13 @@
                                                         }
                                                       }
                                                     },
+                                                    "editionDescription": {},
+                                                    "editionTitle": {
+                                                      "type": "string"
+                                                    },
+                                                    "pageCount": {
+                                                      "type": "integer"
+                                                    },
                                                     "createdAt": {
                                                       "type": "string",
                                                       "format": "date-time"
@@ -2542,6 +2564,24 @@
                                                     }
                                                   }
                                                 }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      },
+                                      "summary": {},
+                                      "activeEdition": {
+                                        "type": "object",
+                                        "properties": {
+                                          "data": {
+                                            "type": "object",
+                                            "properties": {
+                                              "id": {
+                                                "type": "number"
+                                              },
+                                              "attributes": {
+                                                "type": "object",
+                                                "properties": {}
                                               }
                                             }
                                           }
@@ -2748,6 +2788,7 @@
                         "website": {
                           "type": "string"
                         },
+                        "biography": {},
                         "createdAt": {
                           "type": "string",
                           "format": "date-time"
@@ -2825,9 +2866,6 @@
             "type": "string",
             "format": "date"
           },
-          "summary": {
-            "type": "string"
-          },
           "editions": {
             "type": "object",
             "properties": {
@@ -2843,6 +2881,24 @@
                       "type": "object",
                       "properties": {}
                     }
+                  }
+                }
+              }
+            }
+          },
+          "summary": {},
+          "activeEdition": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "attributes": {
+                    "type": "object",
+                    "properties": {}
                   }
                 }
               }
@@ -2926,7 +2982,9 @@
         "properties": {
           "data": {
             "required": [
-              "cover"
+              "publicationDate",
+              "cover",
+              "editionTitle"
             ],
             "type": "object",
             "properties": {
@@ -2940,9 +2998,6 @@
                 "type": "string",
                 "format": "date"
               },
-              "editionDescription": {
-                "type": "string"
-              },
               "cover": {
                 "oneOf": [
                   {
@@ -2953,6 +3008,13 @@
                   }
                 ],
                 "example": "string or id"
+              },
+              "editionDescription": {},
+              "editionTitle": {
+                "type": "string"
+              },
+              "pageCount": {
+                "type": "integer"
               }
             }
           }
@@ -3007,7 +3069,9 @@
       "Edition": {
         "type": "object",
         "required": [
-          "cover"
+          "publicationDate",
+          "cover",
+          "editionTitle"
         ],
         "properties": {
           "isbn10": {
@@ -3019,9 +3083,6 @@
           "publicationDate": {
             "type": "string",
             "format": "date"
-          },
-          "editionDescription": {
-            "type": "string"
           },
           "cover": {
             "type": "object",
@@ -3645,6 +3706,13 @@
               }
             }
           },
+          "editionDescription": {},
+          "editionTitle": {
+            "type": "string"
+          },
+          "pageCount": {
+            "type": "integer"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -3854,9 +3922,6 @@
                                     "type": "object",
                                     "properties": {
                                       "name": {
-                                        "type": "string"
-                                      },
-                                      "biography": {
                                         "type": "string"
                                       },
                                       "slug": {
@@ -4513,6 +4578,7 @@
                                       "website": {
                                         "type": "string"
                                       },
+                                      "biography": {},
                                       "createdAt": {
                                         "type": "string",
                                         "format": "date-time"
@@ -4666,9 +4732,6 @@
                           "type": "string",
                           "format": "date"
                         },
-                        "summary": {
-                          "type": "string"
-                        },
                         "editions": {
                           "type": "object",
                           "properties": {
@@ -4692,9 +4755,6 @@
                                       "publicationDate": {
                                         "type": "string",
                                         "format": "date"
-                                      },
-                                      "editionDescription": {
-                                        "type": "string"
                                       },
                                       "cover": {
                                         "type": "object",
@@ -4835,6 +4895,13 @@
                                           }
                                         }
                                       },
+                                      "editionDescription": {},
+                                      "editionTitle": {
+                                        "type": "string"
+                                      },
+                                      "pageCount": {
+                                        "type": "integer"
+                                      },
                                       "createdAt": {
                                         "type": "string",
                                         "format": "date-time"
@@ -4883,6 +4950,24 @@
                                       }
                                     }
                                   }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "summary": {},
+                        "activeEdition": {
+                          "type": "object",
+                          "properties": {
+                            "data": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "number"
+                                },
+                                "attributes": {
+                                  "type": "object",
+                                  "properties": {}
                                 }
                               }
                             }

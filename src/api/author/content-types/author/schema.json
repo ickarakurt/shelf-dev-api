@@ -18,9 +18,6 @@
       "maxLength": 120,
       "required": true
     },
-    "biography": {
-      "type": "text"
-    },
     "slug": {
       "type": "string",
       "required": true,
@@ -46,13 +43,17 @@
       ]
     },
     "birthDate": {
-      "type": "integer"
+      "type": "integer",
+      "required": true
     },
     "deathDate": {
       "type": "integer"
     },
     "website": {
       "type": "string"
+    },
+    "biography": {
+      "type": "blocks"
     }
   }
 }

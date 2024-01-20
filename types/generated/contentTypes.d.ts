@@ -380,7 +380,6 @@ export interface ApiAuthorAuthor extends Schema.CollectionType {
         minLength: 3;
         maxLength: 120;
       }>;
-    biography: Attribute.Text;
     slug: Attribute.String &
       Attribute.Required &
       Attribute.Unique &
@@ -394,9 +393,10 @@ export interface ApiAuthorAuthor extends Schema.CollectionType {
       'api::book.book'
     >;
     photo: Attribute.Media;
-    birthDate: Attribute.Integer;
+    birthDate: Attribute.Integer & Attribute.Required;
     deathDate: Attribute.Integer;
     website: Attribute.String;
+    biography: Attribute.Blocks;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -451,10 +451,15 @@ export interface ApiBookBook extends Schema.CollectionType {
       'api::subject.subject'
     >;
     originalPublicationDate: Attribute.Date;
-    summary: Attribute.Text;
     editions: Attribute.Relation<
       'api::book.book',
       'oneToMany',
+      'api::edition.edition'
+    >;
+    summary: Attribute.Blocks;
+    activeEdition: Attribute.Relation<
+      'api::book.book',
+      'oneToOne',
       'api::edition.edition'
     >;
     createdAt: Attribute.DateTime;
@@ -481,9 +486,11 @@ export interface ApiEditionEdition extends Schema.CollectionType {
   attributes: {
     isbn10: Attribute.String;
     isbn13: Attribute.String;
-    publicationDate: Attribute.Date;
-    editionDescription: Attribute.Text;
+    publicationDate: Attribute.Date & Attribute.Required;
     cover: Attribute.Media & Attribute.Required;
+    editionDescription: Attribute.Blocks;
+    editionTitle: Attribute.String & Attribute.Required;
+    pageCount: Attribute.Integer;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

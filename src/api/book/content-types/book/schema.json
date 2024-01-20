@@ -40,12 +40,17 @@
     "originalPublicationDate": {
       "type": "date"
     },
-    "summary": {
-      "type": "text"
-    },
     "editions": {
       "type": "relation",
       "relation": "oneToMany",
+      "target": "api::edition.edition"
+    },
+    "summary": {
+      "type": "blocks"
+    },
+    "activeEdition": {
+      "type": "relation",
+      "relation": "oneToOne",
       "target": "api::edition.edition"
     }
   }

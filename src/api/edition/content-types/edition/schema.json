@@ -19,21 +19,29 @@
       "type": "string"
     },
     "publicationDate": {
-      "type": "date"
-    },
-    "editionDescription": {
-      "type": "text"
+      "type": "date",
+      "required": true
     },
     "cover": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": false,
+      ]
+    },
+    "editionDescription": {
+      "type": "blocks"
+    },
+    "editionTitle": {
+      "type": "string",
       "required": true
+    },
+    "pageCount": {
+      "type": "integer"
     }
   }
 }
