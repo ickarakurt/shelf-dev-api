@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "editions",
+  "info": {
+    "singularName": "edition",
+    "pluralName": "editions",
+    "displayName": "Edition",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "isbn10": {
+      "type": "string"
+    },
+    "isbn13": {
+      "type": "string"
+    },
+    "publicationDate": {
+      "type": "date"
+    },
+    "editionDescription": {
+      "type": "text"
+    },
+    "cover": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    }
+  }
+}

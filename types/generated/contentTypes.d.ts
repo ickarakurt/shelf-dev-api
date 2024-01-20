@@ -380,7 +380,7 @@ export interface ApiAuthorAuthor extends Schema.CollectionType {
         minLength: 3;
         maxLength: 120;
       }>;
-    bio: Attribute.Text;
+    biography: Attribute.Text;
     slug: Attribute.String &
       Attribute.Required &
       Attribute.Unique &
@@ -394,6 +394,9 @@ export interface ApiAuthorAuthor extends Schema.CollectionType {
       'api::book.book'
     >;
     photo: Attribute.Media;
+    birthDate: Attribute.Integer;
+    deathDate: Attribute.Integer;
+    website: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -430,7 +433,6 @@ export interface ApiBookBook extends Schema.CollectionType {
         minLength: 3;
         maxLength: 200;
       }>;
-    cover: Attribute.Media & Attribute.Required;
     slug: Attribute.String &
       Attribute.Required &
       Attribute.Unique &
@@ -443,10 +445,17 @@ export interface ApiBookBook extends Schema.CollectionType {
       'manyToMany',
       'api::author.author'
     >;
-    categories: Attribute.Relation<
+    subjects: Attribute.Relation<
       'api::book.book',
       'manyToMany',
-      'api::category.category'
+      'api::subject.subject'
+    >;
+    originalPublicationDate: Attribute.Date;
+    summary: Attribute.Text;
+    editions: Attribute.Relation<
+      'api::book.book',
+      'oneToMany',
+      'api::edition.edition'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -458,53 +467,34 @@ export interface ApiBookBook extends Schema.CollectionType {
   };
 }
 
-export interface ApiCategoryCategory extends Schema.CollectionType {
-  collectionName: 'categories';
+export interface ApiEditionEdition extends Schema.CollectionType {
+  collectionName: 'editions';
   info: {
-    singularName: 'category';
-    pluralName: 'categories';
-    displayName: 'Category';
+    singularName: 'edition';
+    pluralName: 'editions';
+    displayName: 'Edition';
     description: '';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
-    name: Attribute.String &
-      Attribute.Required &
-      Attribute.SetMinMaxLength<{
-        minLength: 3;
-        maxLength: 100;
-      }>;
-    description: Attribute.Text &
-      Attribute.Required &
-      Attribute.SetMinMaxLength<{
-        minLength: 1;
-        maxLength: 1000;
-      }>;
-    slug: Attribute.String &
-      Attribute.Required &
-      Attribute.Unique &
-      Attribute.SetMinMaxLength<{
-        minLength: 3;
-        maxLength: 100;
-      }>;
-    books: Attribute.Relation<
-      'api::category.category',
-      'manyToMany',
-      'api::book.book'
-    >;
+    isbn10: Attribute.String;
+    isbn13: Attribute.String;
+    publicationDate: Attribute.Date;
+    editionDescription: Attribute.Text;
+    cover: Attribute.Media & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
-      'api::category.category',
+      'api::edition.edition',
       'oneToOne',
       'admin::user'
     > &
       Attribute.Private;
     updatedBy: Attribute.Relation<
-      'api::category.category',
+      'api::edition.edition',
       'oneToOne',
       'admin::user'
     > &
@@ -525,8 +515,13 @@ export interface ApiSubjectSubject extends Schema.CollectionType {
   };
   attributes: {
     name: Attribute.String & Attribute.Required;
-    description: Attribute.Text;
+    description: Attribute.Text & Attribute.Required;
     slug: Attribute.String & Attribute.Required & Attribute.Unique;
+    books: Attribute.Relation<
+      'api::subject.subject',
+      'manyToMany',
+      'api::book.book'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1002,7 +997,7 @@ declare module '@strapi/types' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'api::author.author': ApiAuthorAuthor;
       'api::book.book': ApiBookBook;
-      'api::category.category': ApiCategoryCategory;
+      'api::edition.edition': ApiEditionEdition;
       'api::subject.subject': ApiSubjectSubject;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;

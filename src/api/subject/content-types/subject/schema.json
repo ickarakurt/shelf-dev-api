@@ -17,12 +17,19 @@
       "required": true
     },
     "description": {
-      "type": "text"
+      "type": "text",
+      "required": true
     },
     "slug": {
       "type": "string",
       "unique": true,
       "required": true
+    },
+    "books": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::book.book",
+      "inversedBy": "subjects"
     }
   }
 }
