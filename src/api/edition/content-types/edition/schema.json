@@ -33,15 +33,15 @@
         "audios"
       ]
     },
-    "editionDescription": {
-      "type": "blocks"
-    },
     "editionTitle": {
       "type": "string",
       "required": true
     },
     "pageCount": {
       "type": "integer"
+    },
+    "editionDescription": {
+      "type": "richtext"
     }
   }
 }

@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2024-01-20T19:32:17.344Z"
+    "x-generation-date": "2024-01-21T00:07:11.267Z"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -140,7 +140,9 @@
               "website": {
                 "type": "string"
               },
-              "biography": {}
+              "biography": {
+                "type": "string"
+              }
             }
           }
         }
@@ -896,7 +898,9 @@
                                       "website": {
                                         "type": "string"
                                       },
-                                      "biography": {},
+                                      "biography": {
+                                        "type": "string"
+                                      },
                                       "createdAt": {
                                         "type": "string",
                                         "format": "date-time"
@@ -1213,12 +1217,14 @@
                                           }
                                         }
                                       },
-                                      "editionDescription": {},
                                       "editionTitle": {
                                         "type": "string"
                                       },
                                       "pageCount": {
                                         "type": "integer"
+                                      },
+                                      "editionDescription": {
+                                        "type": "string"
                                       },
                                       "createdAt": {
                                         "type": "string",
@@ -1273,7 +1279,6 @@
                             }
                           }
                         },
-                        "summary": {},
                         "activeEdition": {
                           "type": "object",
                           "properties": {
@@ -1290,6 +1295,9 @@
                               }
                             }
                           }
+                        },
+                        "summary": {
+                          "type": "string"
                         },
                         "createdAt": {
                           "type": "string",
@@ -1492,7 +1500,9 @@
           "website": {
             "type": "string"
           },
-          "biography": {},
+          "biography": {
+            "type": "string"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -1628,7 +1638,6 @@
                   "example": "string or id"
                 }
               },
-              "summary": {},
               "activeEdition": {
                 "oneOf": [
                   {
@@ -1639,6 +1648,9 @@
                   }
                 ],
                 "example": "string or id"
+              },
+              "summary": {
+                "type": "string"
               }
             }
           }
@@ -2509,12 +2521,14 @@
                                                         }
                                                       }
                                                     },
-                                                    "editionDescription": {},
                                                     "editionTitle": {
                                                       "type": "string"
                                                     },
                                                     "pageCount": {
                                                       "type": "integer"
+                                                    },
+                                                    "editionDescription": {
+                                                      "type": "string"
                                                     },
                                                     "createdAt": {
                                                       "type": "string",
@@ -2569,7 +2583,6 @@
                                           }
                                         }
                                       },
-                                      "summary": {},
                                       "activeEdition": {
                                         "type": "object",
                                         "properties": {
@@ -2586,6 +2599,9 @@
                                             }
                                           }
                                         }
+                                      },
+                                      "summary": {
+                                        "type": "string"
                                       },
                                       "createdAt": {
                                         "type": "string",
@@ -2788,7 +2804,9 @@
                         "website": {
                           "type": "string"
                         },
-                        "biography": {},
+                        "biography": {
+                          "type": "string"
+                        },
                         "createdAt": {
                           "type": "string",
                           "format": "date-time"
@@ -2886,7 +2904,6 @@
               }
             }
           },
-          "summary": {},
           "activeEdition": {
             "type": "object",
             "properties": {
@@ -2903,6 +2920,9 @@
                 }
               }
             }
+          },
+          "summary": {
+            "type": "string"
           },
           "createdAt": {
             "type": "string",
@@ -3009,12 +3029,14 @@
                 ],
                 "example": "string or id"
               },
-              "editionDescription": {},
               "editionTitle": {
                 "type": "string"
               },
               "pageCount": {
                 "type": "integer"
+              },
+              "editionDescription": {
+                "type": "string"
               }
             }
           }
@@ -3706,12 +3728,14 @@
               }
             }
           },
-          "editionDescription": {},
           "editionTitle": {
             "type": "string"
           },
           "pageCount": {
             "type": "integer"
+          },
+          "editionDescription": {
+            "type": "string"
           },
           "createdAt": {
             "type": "string",
@@ -4578,7 +4602,9 @@
                                       "website": {
                                         "type": "string"
                                       },
-                                      "biography": {},
+                                      "biography": {
+                                        "type": "string"
+                                      },
                                       "createdAt": {
                                         "type": "string",
                                         "format": "date-time"
@@ -4895,12 +4921,14 @@
                                           }
                                         }
                                       },
-                                      "editionDescription": {},
                                       "editionTitle": {
                                         "type": "string"
                                       },
                                       "pageCount": {
                                         "type": "integer"
+                                      },
+                                      "editionDescription": {
+                                        "type": "string"
                                       },
                                       "createdAt": {
                                         "type": "string",
@@ -4955,7 +4983,6 @@
                             }
                           }
                         },
-                        "summary": {},
                         "activeEdition": {
                           "type": "object",
                           "properties": {
@@ -4972,6 +4999,9 @@
                               }
                             }
                           }
+                        },
+                        "summary": {
+                          "type": "string"
                         },
                         "createdAt": {
                           "type": "string",

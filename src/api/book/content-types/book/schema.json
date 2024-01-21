@@ -45,13 +45,13 @@
       "relation": "oneToMany",
       "target": "api::edition.edition"
     },
-    "summary": {
-      "type": "blocks"
-    },
     "activeEdition": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::edition.edition"
+    },
+    "summary": {
+      "type": "richtext"
     }
   }
 }
