@@ -16,6 +16,8 @@
     "@strapi/plugin-users-permissions": "4.17.0",
     "@strapi/provider-upload-aws-s3": "^4.17.0",
     "@strapi/strapi": "4.17.0",
+    "axios": "^1.6.5",
+    "buffer-image-size": "^0.6.4",
     "pg": "8.8.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
