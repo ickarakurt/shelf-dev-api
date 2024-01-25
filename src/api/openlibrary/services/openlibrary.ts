@@ -1,8 +1,8 @@
-import path from "path";
-import fs from "fs";
 import axios from "axios";
-import https from "https";
 import sizeOf from "buffer-image-size";
+import fs from "fs";
+import https from "https";
+import path from "path";
 
 const ADMIN_ID = 1;
 
@@ -74,10 +74,11 @@ const upload = async (imgPath) => {
 
 const authorPath = (olId: string) => `https://openlibrary.org/authors/${olId}.json`;
 const authorCoverPath = (olId: string) => `https://covers.openlibrary.org/a/olid/${olId}.jpg`;
-const bookPath = (olId: string) => `https://openlibrary.org/books/${olId}.json`;
-const workPath = (olId: string) => `https://openlibrary.org/works/${olId}.json`;
+const bookPath = (olId: string) => `https://openlibrary.org/books/${olId}.json?jscmd=data`;
+const workPath = (olId: string) => `https://openlibrary.org/works/${olId}.json?jscmd=details`;
 const getByIsbnPath = (isbn: string) =>  `https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&jscmd=data&format=json`;
 const editionsPath = (olId: string) => `https://openlibrary.org/works/${olId}/editions.json`;
+const bookCover = (olId: string) => `https://covers.openlibrary.org/b/id/${olId}-L.jpg`; //
 
 const getBook = async (olId: string) => {
   const response = await fetch(bookPath(olId));
@@ -116,11 +117,41 @@ const getEditions = async (olId: string) => {
   return data;
 }
 
-const saveSubject = async (subject: any) => {
-  await strapi.services.subjects.create({
-    name: subject.name,
-    slug: subject.slug,
-  });
+const saveSubject = async (name: string) => {
+  try {
+    const createdSubject = await strapi.entityService.create('api::subject.subject', {
+        data: {
+          name: name,
+          slug: slugify(name),
+          description: '',
+          publishedAt: new Date(),
+        }
+    });
+    return createdSubject;
+  } catch (error) {
+    let subject = await strapi.entityService.findMany('api::subject.subject', {
+      filters: {
+        name: name,
+      }
+    });
+    return subject[0];
+  }
+}
+
+const setActiveEditions = async (bookId, editionIds) => {
+  console.log("🚀 ~ setActiveEditions ~ bookId, editionIds:", {bookId, editionIds})
+  try {
+    const updatedBook = await strapi.entityService.update('api::book.book', bookId, {
+      data: {
+        editions: editionIds,
+        activeEdition: editionIds[0],
+      }
+    });
+    return updatedBook;
+  } catch (error) {
+    console.log("🚀 ~ setActiveEditions ~ error:", error)
+    return null;
+  }
 }
 
 const download = async (url) => {
@@ -158,52 +189,151 @@ const saveAuthor = async (author: Author) => {
       birthDate: author.birthDate,
       slug: author.slug,
       photo: author.photo,
+      publishedAt: new Date(),
     },
   });
 }
 
 const saveBook = async (book: Book) => {
-  await strapi.services.books.create({
-    name: book.name,
-    slug: book.slug,
-    summary: book.summary,
-  });
+  try {
+    const createdBook = await strapi.entityService.create('api::book.book', {
+      data: {
+        name: book.name,
+        slug: book.slug,
+        summary: book.summary,
+        authors: book.authors,
+        subjects: book.subjects,
+        publishedAt: new Date(),
+      }
+    });
+    return createdBook
+  } catch (error) {
+    console.log("🚀 ~ saveBook ~ error:", error)
+    const savedBook = await strapi.entityService.findMany('api::book.book', {
+      filters: {
+        slug: book.slug,
+      }
+    });
+    return savedBook[0];
+  }
 }
 
 const saveEdition = async (edition: Edition) => {
-  await strapi.services.editions.create({
-    isbn10: edition.isbn10,
-    isbn13: edition.isbn13,
-    editionTitle: edition.editionTitle,
-    editionDescription: edition.editionDescription,
-    pageCount: edition.pageCount,
-    publishedDate: edition.publishedDate,
-    cover: edition.cover,
-  });
+  try {
+    const savedEdition = await strapi.entityService.create('api::edition.edition', {
+      data: {
+        isbn10: edition.isbn10,
+        isbn13: edition.isbn13,
+        editionTitle: edition.editionTitle,
+        editionDescription: edition.editionDescription,
+        pageCount: edition.pageCount,
+        publicationDate: edition.publicationDate ? new Date(String(edition.publicationDate)) : undefined,
+        cover: edition.cover,
+        publishedAt: new Date(),
+      }
+    });
+    return savedEdition;
+  } catch (error) {
+    const savedEdition = await strapi.entityService.findMany('api::edition.edition', {
+      filters: {
+        $or: [
+          { isbn10: edition.isbn10 },
+          { isbn13: edition.isbn13 },
+        ]
+      }
+    });
+    return savedEdition[0];
+  }
+}
+
+async function processAuthors(authors) {
+    const authorPromises = authors.map(async author => {
+        const authorData = await getAuthor(author);
+        try {
+            const coverPath = await download(authorData.photo);
+            const uploadResponse = await upload(coverPath);
+            const createdAuthor = await saveAuthor({ ...authorData, photo: uploadResponse.id });
+            console.log('Author saved');
+            return createdAuthor;
+        } catch (error) {
+            const author = await strapi.entityService.findMany('api::author.author', {
+                filters: {
+                    slug: authorData.slug,
+                }
+            });
+            return author[0];
+        }
+    });
+
+    const savedAuthors = await Promise.all(authorPromises);
+    return savedAuthors.filter(author => author !== null); // This filters out any null values in case of errors
+}
+
+async function processEditions(editionsData) {
+  const processEdition = async (edition) => {
+    try {
+      const editionKey = edition.key.split('/')[2];
+      const editionData = await getBook(editionKey);
+      const coverPhoto = editionData.covers?.length > 0 ? bookCover(editionData.covers[0]) : "https://covers.openlibrary.org/b/id/12476847-L.jpg"
+      const coverPath = await download(coverPhoto);
+      const uploadResponse = await upload(coverPath);
+
+      const editionToSave = {
+        isbn10: editionData.isbn_10?.length > 0 ? editionData.isbn_10[0] : undefined,
+        isbn13: editionData.isbn_13?.length > 0 ? editionData.isbn_13[0] : undefined,
+        editionTitle: editionData.title,
+        editionDescription: editionData.subtitle,
+        pageCount: editionData.number_of_pages,
+        publicationDate: editionData.publish_date,
+        cover: uploadResponse.id,
+      };
+
+      const savedEdition = await saveEdition(editionToSave);
+      return savedEdition;
+    } catch (error) {
+      console.error(`Failed to process edition ${edition.key}: ${error}`);
+      return null; // Return null or handle the error as required
+    }
+  };
+
+  const editionsPromises = editionsData.entries.map(processEdition);
+  const savedEditions = await Promise.all(editionsPromises);
+  return savedEditions.filter(edition => edition !== null); // Filter out any null values due to errors
 }
 
 export default () => ({
   allFetchAndSave: async (isbn: string) => {
     const data = await getByIsbn(isbn);
     const bookData = data[`ISBN:${isbn}`];
+    const bookKey = bookData.key.split('/')[2];
+    const book = await getBook(bookKey);
+    const workKey = book.works[0].key.split('/')[2];
 
-    // Fetching additional data based on bookData
-    const authors = bookData.authors.map(author => author.url.split('/')[4]);
-    authors.forEach(async author => {
-        const authorData = await getAuthor(author);
-        try {
-          const coverPath = await download(authorData.photo);
-          const uploadResponse = await upload(coverPath);
-          await saveAuthor({ ...authorData, photo: uploadResponse.id});
-          console.log('Author saved');
-        } catch (error) {
-          console.log("🚀 ~ allFetchAndSave: ~ error:", error)
-          console.log('Author already exists');
-        }
+    const savedAuthors = await processAuthors(bookData.authors.map(author => author.url.split('/')[4]));
+    const savedSubjects = await Promise.all(bookData.subjects.map(async (subject) => {
+      return saveSubject(subject.name);
+    }));
+
+    const bookToSave: Book = {
+      name: bookData.title,
+      slug: slugify(bookData.title),
+      summary: bookData.subtitle,
+      authors: savedAuthors.map(author => author.id),
+      subjects: savedSubjects.map(subject => subject.id),
     }
-    );
 
-    return authors;
+    const savedBook = await saveBook(bookToSave);
+    const editionsData = await getEditions(workKey);
+    const savedEditions = await processEditions(editionsData);
+    await setActiveEditions(savedBook.id, savedEditions.map(edition => edition.id));
+
+    return {
+      authors: savedAuthors,
+      subjects: savedSubjects,
+      book: savedBook,
+      editions: savedEditions,
+      activeEdition: savedEditions[0],
+    }
   }
 });
 
@@ -215,17 +345,17 @@ export interface Author {
   birthDate: string;
   photo: string;
   slug: string;
-  books?: Book[];
+  books?: number[];
 }
 
 export interface Book {
   name: string;
   slug: string;
   summary: string;
-  authors?: Author[];
-  subjects?: Subject[];
-  editions?: Edition[];
-  activeEdition?: Edition;
+  authors?: number[];
+  subjects?: number[];
+  editions?: number[];
+  activeEdition?: number;
 }
 
 export interface Edition {
@@ -234,7 +364,7 @@ export interface Edition {
   editionTitle: string;
   editionDescription: string;
   pageCount: number;
-  publishedDate: Date;
+  publicationDate: Date;
   cover: string;
 }
 

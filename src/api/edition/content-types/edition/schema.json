@@ -20,7 +20,7 @@
     },
     "publicationDate": {
       "type": "date",
-      "required": true
+      "required": false
     },
     "cover": {
       "type": "media",
