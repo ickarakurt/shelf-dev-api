@@ -14,14 +14,14 @@ const agent = new https.Agent({
 /**
  * utils
  */
-function slugify(str) {
+function slugify(str: string): string {
   str = str.replace(/^\s+|\s+$/g, ''); // trim
   str = str.toLowerCase();
   
   // remove accents, swap ñ for n, etc
-  var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
-  var to   = "aaaaeeeeiiiioooouuuunc------";
-  for (var i=0, l=from.length ; i<l ; i++) {
+  let from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+  let to   = "aaaaeeeeiiiioooouuuunc------";
+  for (let i=0, l=from.length ; i<l ; i++) {
     str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
   }
 
@@ -63,7 +63,7 @@ const upload = async (imgPath) => {
     const result = await strapi.query("plugin::upload.file").create({ data: entity });
     return result;
   } catch (error) {
-    console.log("🚀 ~ upload ~ error:", error)
+    console.info("🚀 ~ upload ~ error:", error)
     return null
   }
 };
@@ -80,13 +80,13 @@ const getByIsbnPath = (isbn: string) =>  `https://openlibrary.org/api/books?bibk
 const editionsPath = (olId: string) => `https://openlibrary.org/works/${olId}/editions.json`;
 const bookCover = (olId: string) => `https://covers.openlibrary.org/b/id/${olId}-L.jpg`; //
 
-const getBook = async (olId: string) => {
+const getBook = async (olId: string): Promise<any>=> {
   const response = await fetch(bookPath(olId));
   const data: any = await response.json();
   return data;
 }
 
-const getAuthor = async (olId: string) => {
+const getAuthor = async (olId: string): Promise<Author> => {
   const response = await fetch(authorPath(olId));
   const data: any = await response.json();
 
@@ -139,7 +139,7 @@ const saveSubject = async (name: string) => {
 }
 
 const setActiveEditions = async (bookId, editionIds) => {
-  console.log("🚀 ~ setActiveEditions ~ bookId, editionIds:", {bookId, editionIds})
+  console.info("🚀 ~ setActiveEditions ~ bookId, editionIds:", {bookId, editionIds})
   try {
     const updatedBook = await strapi.entityService.update('api::book.book', bookId, {
       data: {
@@ -149,7 +149,7 @@ const setActiveEditions = async (bookId, editionIds) => {
     });
     return updatedBook;
   } catch (error) {
-    console.log("🚀 ~ setActiveEditions ~ error:", error)
+    console.info("🚀 ~ setActiveEditions ~ error:", error)
     return null;
   }
 }
@@ -181,12 +181,12 @@ const download = async (url) => {
   });
 };
 
-const saveAuthor = async (author: Author) => {
-  return await strapi.entityService.create('api::author.author',{
+const saveAuthor = (author: Author) => {
+  return strapi.entityService.create('api::author.author',{
     data: {
       name: author.name,
       biography: author.biography,
-      birthDate: author.birthDate,
+      birthDate: new Date(author.birthDate).getFullYear(),
       slug: author.slug,
       photo: author.photo,
       publishedAt: new Date(),
@@ -203,12 +203,13 @@ const saveBook = async (book: Book) => {
         summary: book.summary,
         authors: book.authors,
         subjects: book.subjects,
+        originalPublicationDate: new Date(book.originalPublicationDate),
         publishedAt: new Date(),
       }
     });
     return createdBook
   } catch (error) {
-    console.log("🚀 ~ saveBook ~ error:", error)
+    console.info("🚀 ~ saveBook ~ error:", error)
     const savedBook = await strapi.entityService.findMany('api::book.book', {
       filters: {
         slug: book.slug,
@@ -246,16 +247,17 @@ const saveEdition = async (edition: Edition) => {
   }
 }
 
-async function processAuthors(authors) {
+async function processAuthors(authors: string[]) {
     const authorPromises = authors.map(async author => {
         const authorData = await getAuthor(author);
         try {
             const coverPath = await download(authorData.photo);
             const uploadResponse = await upload(coverPath);
             const createdAuthor = await saveAuthor({ ...authorData, photo: uploadResponse.id });
-            console.log('Author saved');
+            console.info('Author saved');
             return createdAuthor;
         } catch (error) {
+            console.log("🚀 ~ authorPromises ~ error:", error)
             const author = await strapi.entityService.findMany('api::author.author', {
                 filters: {
                     slug: authorData.slug,
@@ -269,7 +271,7 @@ async function processAuthors(authors) {
     return savedAuthors.filter(author => author !== null); // This filters out any null values in case of errors
 }
 
-async function processEditions(editionsData) {
+async function processEditions(editionsData: any) {
   const processEdition = async (edition) => {
     try {
       const editionKey = edition.key.split('/')[2];
@@ -318,8 +320,9 @@ export default () => ({
       name: bookData.title,
       slug: slugify(bookData.title),
       summary: bookData.subtitle,
-      authors: savedAuthors.map(author => author.id),
+      authors: savedAuthors.map(author => author.id as number),
       subjects: savedSubjects.map(subject => subject.id),
+      originalPublicationDate: bookData.publish_date,
     }
 
     const savedBook = await saveBook(bookToSave);
@@ -356,6 +359,7 @@ export interface Book {
   subjects?: number[];
   editions?: number[];
   activeEdition?: number;
+  originalPublicationDate?: Date;
 }
 
 export interface Edition {
