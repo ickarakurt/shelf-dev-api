@@ -123,8 +123,7 @@ const saveSubject = async (name: string) => {
         data: {
           name: name,
           slug: slugify(name),
-          description: '',
-          publishedAt: new Date(),
+          description: ''
         }
     });
     return createdSubject;
@@ -188,8 +187,7 @@ const saveAuthor = (author: Author) => {
       biography: author.biography,
       birthDate: new Date(author.birthDate).getFullYear(),
       slug: author.slug,
-      photo: author.photo,
-      publishedAt: new Date(),
+      photo: author.photo
     },
   });
 }
@@ -203,8 +201,7 @@ const saveBook = async (book: Book) => {
         summary: book.summary,
         authors: book.authors,
         subjects: book.subjects,
-        originalPublicationDate: new Date(book.originalPublicationDate),
-        publishedAt: new Date(),
+        originalPublicationDate: new Date(book.originalPublicationDate)
       }
     });
     return createdBook
@@ -229,8 +226,7 @@ const saveEdition = async (edition: Edition) => {
         editionDescription: edition.editionDescription,
         pageCount: edition.pageCount,
         publicationDate: edition.publicationDate ? new Date(String(edition.publicationDate)) : undefined,
-        cover: edition.cover,
-        publishedAt: new Date(),
+        cover: edition.cover
       }
     });
     return savedEdition;
