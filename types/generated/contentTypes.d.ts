@@ -522,7 +522,7 @@ export interface ApiSubjectSubject extends Schema.CollectionType {
   };
   attributes: {
     name: Attribute.String & Attribute.Required;
-    description: Attribute.Text & Attribute.Required;
+    description: Attribute.Text;
     slug: Attribute.String & Attribute.Required & Attribute.Unique;
     books: Attribute.Relation<
       'api::subject.subject',
