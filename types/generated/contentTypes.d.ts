@@ -393,7 +393,7 @@ export interface ApiAuthorAuthor extends Schema.CollectionType {
       'api::book.book'
     >;
     photo: Attribute.Media;
-    birthDate: Attribute.Integer & Attribute.Required;
+    birthDate: Attribute.Integer;
     deathDate: Attribute.Integer;
     website: Attribute.String;
     biography: Attribute.RichText;

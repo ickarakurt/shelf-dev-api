@@ -44,7 +44,7 @@
     },
     "birthDate": {
       "type": "integer",
-      "required": true
+      "required": false
     },
     "deathDate": {
       "type": "integer"
