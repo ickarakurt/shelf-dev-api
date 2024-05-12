@@ -13,10 +13,12 @@
   "pluginOptions": {},
   "attributes": {
     "isbn10": {
-      "type": "string"
+      "type": "string",
+      "unique": true
     },
     "isbn13": {
-      "type": "string"
+      "type": "string",
+      "unique": true
     },
     "publicationDate": {
       "type": "date",
@@ -25,7 +27,7 @@
     "cover": {
       "type": "media",
       "multiple": false,
-      "required": true,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
@@ -42,6 +44,12 @@
     },
     "editionDescription": {
       "type": "richtext"
+    },
+    "languageId": {
+      "type": "integer"
+    },
+    "format": {
+      "type": "string"
     }
   }
 }

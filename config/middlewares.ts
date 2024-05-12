@@ -12,12 +12,12 @@ export default [
                 "'self'",
                 'data:',
                 'blob:',
-                'shelf-dev-production.s3.eu-central-1.amazonaws.com', "market-assets.strapi.io"],
+                'shelf-dev-production.s3.eu-central-1.amazonaws.com', 'shelf-dev-staging.s3.eu-central-1.amazonaws.com', "market-assets.strapi.io"],
               'media-src': [
                 "'self'",
                 'data:',
                 'blob:',
-                'shelf-dev-production.s3.eu-central-1.amazonaws.com', "market-assets.strapi.io"
+                'shelf-dev-production.s3.eu-central-1.amazonaws.com', 'shelf-dev-staging.s3.eu-central-1.amazonaws.com',"market-assets.strapi.io"
               ],
               upgradeInsecureRequests: null,
             },

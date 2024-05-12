@@ -4,17 +4,18 @@
 
 export default {
   async fetchBook(ctx, next) {
-    const { isbn } = ctx.request.query;
+    const { root } = ctx.request.body;
 
-    if (!isbn) {
-      ctx.badRequest("Missing isbn");
+    if (!root) {
+      console.log("🚀 ~ fetchBook ~ root:", root)
+      ctx.badRequest("Missing root");
       return;
     }
 
     try {
       const data = await strapi
         .service("api::openlibrary.openlibrary")
-        .allFetchAndSave(isbn);
+        .allFetchAndSave(root);
       ctx.body = data;
     } catch (err) {
       ctx.badRequest("Fetch book controller error", { moreDetails: err });

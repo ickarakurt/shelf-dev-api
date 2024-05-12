@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2024-03-14T21:36:41.628Z"
+    "x-generation-date": "2024-05-12T19:58:27.804Z"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -1222,6 +1222,12 @@
                                         "type": "integer"
                                       },
                                       "editionDescription": {
+                                        "type": "string"
+                                      },
+                                      "languageId": {
+                                        "type": "integer"
+                                      },
+                                      "format": {
                                         "type": "string"
                                       },
                                       "createdAt": {
@@ -2528,6 +2534,12 @@
                                                     "editionDescription": {
                                                       "type": "string"
                                                     },
+                                                    "languageId": {
+                                                      "type": "integer"
+                                                    },
+                                                    "format": {
+                                                      "type": "string"
+                                                    },
                                                     "createdAt": {
                                                       "type": "string",
                                                       "format": "date-time"
@@ -3000,7 +3012,6 @@
         "properties": {
           "data": {
             "required": [
-              "cover",
               "editionTitle"
             ],
             "type": "object",
@@ -3033,6 +3044,12 @@
                 "type": "integer"
               },
               "editionDescription": {
+                "type": "string"
+              },
+              "languageId": {
+                "type": "integer"
+              },
+              "format": {
                 "type": "string"
               }
             }
@@ -3088,7 +3105,6 @@
       "Edition": {
         "type": "object",
         "required": [
-          "cover",
           "editionTitle"
         ],
         "properties": {
@@ -3731,6 +3747,12 @@
             "type": "integer"
           },
           "editionDescription": {
+            "type": "string"
+          },
+          "languageId": {
+            "type": "integer"
+          },
+          "format": {
             "type": "string"
           },
           "createdAt": {
@@ -4922,6 +4944,12 @@
                                         "type": "integer"
                                       },
                                       "editionDescription": {
+                                        "type": "string"
+                                      },
+                                      "languageId": {
+                                        "type": "integer"
+                                      },
+                                      "format": {
                                         "type": "string"
                                       },
                                       "createdAt": {
