@@ -52,6 +52,9 @@
     },
     "summary": {
       "type": "richtext"
+    },
+    "subtitle": {
+      "type": "string"
     }
   }
 }

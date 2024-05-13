@@ -50,6 +50,9 @@
     },
     "format": {
       "type": "string"
+    },
+    "external": {
+      "type": "json"
     }
   }
 }

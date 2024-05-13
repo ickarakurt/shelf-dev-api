@@ -54,6 +54,12 @@
     },
     "biography": {
       "type": "richtext"
+    },
+    "identifiers": {
+      "type": "json"
+    },
+    "links": {
+      "type": "json"
     }
   }
 }

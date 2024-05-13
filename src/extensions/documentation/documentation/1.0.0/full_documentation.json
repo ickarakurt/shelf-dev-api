@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2024-05-12T19:58:27.804Z"
+    "x-generation-date": "2024-05-13T16:40:47.637Z"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -141,7 +141,9 @@
               },
               "biography": {
                 "type": "string"
-              }
+              },
+              "identifiers": {},
+              "links": {}
             }
           }
         }
@@ -899,6 +901,8 @@
                                       "biography": {
                                         "type": "string"
                                       },
+                                      "identifiers": {},
+                                      "links": {},
                                       "createdAt": {
                                         "type": "string",
                                         "format": "date-time"
@@ -1230,6 +1234,7 @@
                                       "format": {
                                         "type": "string"
                                       },
+                                      "external": {},
                                       "createdAt": {
                                         "type": "string",
                                         "format": "date-time"
@@ -1301,6 +1306,9 @@
                           }
                         },
                         "summary": {
+                          "type": "string"
+                        },
+                        "subtitle": {
                           "type": "string"
                         },
                         "createdAt": {
@@ -1507,6 +1515,8 @@
           "biography": {
             "type": "string"
           },
+          "identifiers": {},
+          "links": {},
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -1654,6 +1664,9 @@
                 "example": "string or id"
               },
               "summary": {
+                "type": "string"
+              },
+              "subtitle": {
                 "type": "string"
               }
             }
@@ -2540,6 +2553,7 @@
                                                     "format": {
                                                       "type": "string"
                                                     },
+                                                    "external": {},
                                                     "createdAt": {
                                                       "type": "string",
                                                       "format": "date-time"
@@ -2611,6 +2625,9 @@
                                         }
                                       },
                                       "summary": {
+                                        "type": "string"
+                                      },
+                                      "subtitle": {
                                         "type": "string"
                                       },
                                       "createdAt": {
@@ -2817,6 +2834,8 @@
                         "biography": {
                           "type": "string"
                         },
+                        "identifiers": {},
+                        "links": {},
                         "createdAt": {
                           "type": "string",
                           "format": "date-time"
@@ -2932,6 +2951,9 @@
             }
           },
           "summary": {
+            "type": "string"
+          },
+          "subtitle": {
             "type": "string"
           },
           "createdAt": {
@@ -3051,7 +3073,8 @@
               },
               "format": {
                 "type": "string"
-              }
+              },
+              "external": {}
             }
           }
         }
@@ -3755,6 +3778,7 @@
           "format": {
             "type": "string"
           },
+          "external": {},
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -4621,6 +4645,8 @@
                                       "biography": {
                                         "type": "string"
                                       },
+                                      "identifiers": {},
+                                      "links": {},
                                       "createdAt": {
                                         "type": "string",
                                         "format": "date-time"
@@ -4952,6 +4978,7 @@
                                       "format": {
                                         "type": "string"
                                       },
+                                      "external": {},
                                       "createdAt": {
                                         "type": "string",
                                         "format": "date-time"
@@ -5023,6 +5050,9 @@
                           }
                         },
                         "summary": {
+                          "type": "string"
+                        },
+                        "subtitle": {
                           "type": "string"
                         },
                         "createdAt": {

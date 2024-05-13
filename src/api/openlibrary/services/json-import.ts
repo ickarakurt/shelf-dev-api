@@ -75,6 +75,7 @@ export interface Author {
     url: string;
   };
   links: Link[];
+  identifiers: string;
   slug: string;
   born_year: number;
 }
@@ -103,6 +104,7 @@ export interface Edition {
   };
   description?: string;
   edition_format: string;
+  dto_external: string;
   edition_information?: string;
   pages: number;
   release_date: string;
@@ -135,9 +137,11 @@ const saveAuthor = (author: Partial<Author>) => {
     data: {
       name: author.name,
       biography: author.bio,
-      birthDate: new Date().getFullYear(),
+      birthDate: author.born_year ? author.born_year : undefined,
       slug: author.slug,
       photo: author.cached_image.url,
+      identifiers: author.identifiers,
+      links: author.links as unknown as string,
       publishedAt: new Date(),
     },
   });
@@ -148,10 +152,13 @@ const saveBook = async (book) => {
     const createdBook = await strapi.entityService.create("api::book.book", {
       data: {
         name: book.name,
+        subtitle: book.subtitle,
         slug: book.slug,
         summary: book.summary,
         authors: book.authors,
-        originalPublicationDate: new Date(book.originalPublicationDate),
+        originalPublicationDate: book.originalPublicationDate
+          ? new Date(book.originalPublicationDate)
+          : undefined,
         publishedAt: new Date(),
       },
     });
@@ -183,6 +190,7 @@ const saveEdition = async (edition) => {
             : undefined,
           cover: edition.cover,
           format: edition.editionFormat,
+          external: edition.external,
           editionInformation: edition.editionInformation,
           audioLength: edition.audioLength,
           languageId: edition.languageId,
@@ -244,6 +252,7 @@ async function processEdition(editionData: Edition) {
       pageCount: editionData.pages,
       languageId: editionData.language?.id,
       publicationDate: editionData.release_date,
+      external: editionData.dto_external,
       editionInformation: editionData.edition_information,
       audioLength: editionData.audio_seconds,
       editionFormat: editionData.edition_format,
@@ -366,7 +375,9 @@ export const processRoot = async (root: Root) => {
           name: author.name,
           bio: author.bio,
           born_year: author.born_year,
+          identifiers: author.identifiers,
           slug: author.slug,
+          links: author.links,
           cached_image: {
             url: isImageExists ? uploadedImageId : undefined,
           },
@@ -390,6 +401,7 @@ export const processRoot = async (root: Root) => {
   const bookToSave = {
     name: book.title,
     slug: book.slug,
+    subtitle: book.subtitle,
     summary: book.description,
     authors: savedAuthors.map((author) => author.id),
     originalPublicationDate: book.release_date,
