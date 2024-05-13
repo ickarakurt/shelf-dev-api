@@ -240,7 +240,7 @@ async function processEdition(editionData: Edition) {
         : editionData.cached_image?.url;
     if (editionCover) {
       const coverPath = await download(editionCover);
-      uploadResponse = await upload(coverPath);
+      uploadResponse = await upload(coverPath, `edition-${editionData.id}`);
     }
 
     const editionToSave = {
@@ -311,9 +311,8 @@ const download = async (url) => {
   });
 };
 
-const upload = async (imgPath) => {
+const upload = async (imgPath, name) => {
   const ext = path.extname(imgPath).slice(1);
-  const name = path.basename(imgPath);
   const buffer = fs.readFileSync(imgPath);
   const dimentions = sizeOf(buffer);
   const uploadProvider = strapi.plugin("upload").service("provider");
@@ -367,7 +366,10 @@ export const processRoot = async (root: Root) => {
           const imageURLParts = author.cached_image.url.split("/");
           const newLink = `https://cdn.hardcover.app/enlarge?url=https://storage.googleapis.com/hardcover/authors/${imageURLParts[4]}/${imageURLParts[5]}&width=400&height=400&type=webp`;
           const coverPath = await download(newLink);
-          const uploadResponse = await upload(coverPath);
+          const uploadResponse = await upload(
+            coverPath,
+            `author-${author.slug}`,
+          );
           uploadedImageId = uploadResponse.id;
         }
 
