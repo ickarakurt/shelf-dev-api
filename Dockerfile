@@ -64,3 +64,4 @@ EXPOSE 1337
 
 # Start the application
 CMD ["npm", "run", "start"]
+
